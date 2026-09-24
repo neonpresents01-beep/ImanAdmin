@@ -1,0 +1,45 @@
+﻿# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+venv/
+env/
+
+# Build
+build/
+dist/
+dist_final/
+*.spec
+installer_output/
+
+# Database
+*.db
+*.sqlite
+
+# Backups
+backups/
+*.bak
+
+# Logs
+*.log
+
+# Keys (خیلی مهم!)
+private_key.pem
+*.key
+password.txt
+.seller_pass
+
+# customers.db
+customers.db
+
+# Admin output
+plugins_output/
+trial_certificate.bin
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+Thumbs.db
+.DS_Store
