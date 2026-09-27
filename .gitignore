@@ -34,7 +34,7 @@ customers.db
 
 # Admin output
 plugins_output/
-trial_certificate.bin
+
 
 # IDE
 .vscode/
