@@ -80,18 +80,30 @@ def check_and_setup():
     print_header("🔧 راه‌اندازی پنل ادمین")
     safe_print(f"📁 پوشه پنل: {ADMIN_DIR}\n")
     
-    if not (ADMIN_DIR / "license_core.py").exists():
-        print_header("❌ خطا")
-        safe_print("فایل license_core.py یافت نشد!")
-        return None, False
-    safe_print("✅ license_core.py")
+    # ✅ تشخیص: تو exe هستیم یا local?
+    is_frozen = getattr(sys, 'frozen', False)
     
-    if not (ADMIN_DIR / "registry_guard.py").exists():
-        print_header("❌ خطا")
-        safe_print("فایل registry_guard.py یافت نشد!")
-        return None, False
-    safe_print("✅ registry_guard.py")
+    if is_frozen:
+        # تو exe: فایل‌ها داخل bundle هستن، نیازی به چک نیست
+        safe_print("📦 حالت exe (PyInstaller)")
+        safe_print("✅ ماژول‌ها داخل bundle")
+    else:
+        # تو local: فایل‌ها باید کنار main.py باشن
+        safe_print("🐍 حالت سورس (Python)")
+        
+        if not (ADMIN_DIR / "license_core.py").exists():
+            print_header("❌ خطا")
+            safe_print("فایل license_core.py یافت نشد!")
+            return None, False
+        safe_print("✅ license_core.py")
+        
+        if not (ADMIN_DIR / "registry_guard.py").exists():
+            print_header("❌ خطا")
+            safe_print("فایل registry_guard.py یافت نشد!")
+            return None, False
+        safe_print("✅ registry_guard.py")
     
+    # ✅ این بخش برای هر دو حالت کار می‌کنه
     try:
         from license_core import LicenseCore, get_license_core
         safe_print("✅ import license_core")
@@ -112,6 +124,8 @@ def check_and_setup():
         safe_print(f"\n💡 set IMANACCOUNT_KEY_PASSWORD={SELLER_PASSWORD}")
         return None, False
     
+    # ✅ این بخش فقط برای local لازمه
+    # تو exe، کلیدها تو .keys/ کنار exe ساخته می‌شن
     public_key_file = ADMIN_DIR / "public_key.pem"
     if not public_key_file.exists():
         safe_print("\n🔑 ساخت public_key.pem...")
@@ -132,7 +146,6 @@ def check_and_setup():
     safe_print("  ✅ راه‌اندازی کامل شد!")
     safe_print("=" * 60 + "\n")
     return core, True
-
 
 # ============================================================
 # ========== Imports PyQt5 ============
